@@ -1,6 +1,14 @@
 <!DOCTYPE html>
 <html>
 <body>
+    <script>
+        // サブページの404エラーを解消するために、任意のパスでアクセスされた場合の処理
+        // ページのリロードを防ぎ、スクリプトを正しく実行する
+        if (window.location.pathname !== '/') {
+            // GitHub Pagesのルートパスにリダイレクトする
+            window.history.pushState({}, '', '/');
+        }
+    </script>
     <script src="script.js"></script>
 </body>
 </html>
