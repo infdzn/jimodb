@@ -10,7 +10,7 @@
             // 元のパス情報を保持するクエリパラメータを作成
             const queryPath = currentPath.substring(1);
             // ルートにリダイレクト
-            window.history.replaceState({}, '', '/?path=' + queryPath);
+            window.history.replaceState({}, '', '/ + queryPath);
         }
     </script>
     <script src="script2.js"></script>
