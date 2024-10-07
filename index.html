@@ -5,12 +5,14 @@
         // 現在のパスを取得
         const currentPath = window.location.pathname;
 
-        // パスがルートではない（例えば /a/b のようなもの）場合
-        if (currentPath !== '/' && !currentPath.startsWith('/index.html')) {
-            // ルートにリダイレクトするが、クエリパラメータで元のパス情報を保持する
-            window.history.replaceState({}, '', '/?path=' + currentPath.substring(1));
+        // ルートURLと404エラーページを除外する
+        if (currentPath !== '/' && !currentPath.startsWith('/index.html') && !currentPath.startsWith('/404.html')) {
+            // 元のパス情報を保持するクエリパラメータを作成
+            const queryPath = currentPath.substring(1);
+            // ルートにリダイレクト
+            window.history.replaceState({}, '', '/?path=' + queryPath);
         }
     </script>
-    <script src="script.js"></script>
+    <script src="script2.js"></script>
 </body>
 </html>
