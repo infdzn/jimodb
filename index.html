@@ -2,11 +2,13 @@
 <html>
 <body>
     <script>
-        // サブページの404エラーを解消するために、任意のパスでアクセスされた場合の処理
-        // ページのリロードを防ぎ、スクリプトを正しく実行する
-        if (window.location.pathname !== '/') {
-            // GitHub Pagesのルートパスにリダイレクトする
-            window.history.pushState({}, '', '/');
+        // 現在のパスを取得
+        const currentPath = window.location.pathname;
+
+        // パスがルートではない（例えば /a/b のようなもの）場合
+        if (currentPath !== '/' && !currentPath.startsWith('/index.html')) {
+            // ルートにリダイレクトするが、クエリパラメータで元のパス情報を保持する
+            window.history.replaceState({}, '', '/?path=' + currentPath.substring(1));
         }
     </script>
     <script src="script.js"></script>
