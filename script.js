@@ -1,28 +1,34 @@
-// URLのパスを取得し、スラッシュで分割
-const path = window.location.pathname.substring(1).split('/');
+// URLからパスを取得
+const path = window.location.pathname.substring(1);
 
-// JSONデータを取得
+// data.jsonを取得する関数
 fetch('data.json')
-    .then(response => response.json())  // レスポンスをJSONに変換
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
     .then(data => {
-        let result = data;  // dataをresultに格納
+        // データのネストを取得
+        const keys = path.split('/');
+        let result = data;
 
-        // パスに基づいてネストされたデータを取得
-        for (const segment of path) {
-            if (result[segment] !== undefined) {
-                result = result[segment];  // ネストされたデータに移動
+        for (const key of keys) {
+            if (result[key] !== undefined) {
+                result = result[key];
             } else {
-                result = null;  // 該当するキーがなければnull
-                break;
+                // キーが存在しない場合は404エラーメッセージを表示
+                document.body.textContent = "404 error";
+                return;
             }
         }
 
-        // ページ全体を取得された結果のみに設定
-        document.body.textContent = typeof result === 'object' 
-            ? JSON.stringify(result, null, 2)  // オブジェクトをJSON文字列に変換
-            : result;  // 文字列や他の型はそのまま表示
+        // 取得した値を表示
+        document.body.textContent = JSON.stringify(result, null, 2);
     })
     .catch(error => {
-        console.error('Error:', error);
-        document.body.textContent = 'Failed to retrieve data.';
+        console.error('Error fetching data:', error);
+        // エラーが発生した場合も404エラーメッセージを表示
+        document.body.textContent = "404 error";
     });
